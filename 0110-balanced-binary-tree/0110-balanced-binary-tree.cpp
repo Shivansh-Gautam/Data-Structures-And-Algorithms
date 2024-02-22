@@ -9,32 +9,39 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
-public:
-
-    int height(TreeNode* root){
-        if(root==NULL) return 0;
-
-        int leftHeight= height(root->left);
-        int rightHeight= height(root->right);
-
-        int ans=1+max(leftHeight,rightHeight);
+class Solution{
+    public:
+    
+    //Function to check whether a binary tree is balanced or not.
+    pair<bool,int> isBalancedFast(TreeNode *root){
+        if(!root){
+            pair<bool,int> p = make_pair(true,0);
+            return p;
+        }
+        
+        pair<bool,int> leftAns = isBalancedFast(root->left);
+        pair<bool,int> rightAns = isBalancedFast(root->right);
+        
+        bool left = leftAns.first;
+        bool right = rightAns.first;
+        
+        bool diff = abs(leftAns.second - rightAns.second) <= 1;
+        
+        pair<bool,int> ans;
+        ans.second = max(leftAns.second,rightAns.second) + 1;
+        
+        if(left && right && diff){
+            ans.first = true;
+        }
+        else{
+            ans.first = false;
+        }
         return ans;
     }
-
-    bool isBalanced(TreeNode* root) {
-        if(root == NULL) return true;
-
-        int leftheight = height(root->left);
-        int rightheight = height(root->right);
-        int diff = abs(leftheight-rightheight);
-
-        bool ans1 = (diff<=1);
-
-        bool leftAns = isBalanced(root->left);
-        bool rightAns = isBalanced(root->right);
-
-        if(ans1 && leftAns && rightAns) return true;
-        else return false;
+    
+    bool isBalanced(TreeNode *root)
+    {
+        //  Your Code here
+        return isBalancedFast(root).first;
     }
 };
