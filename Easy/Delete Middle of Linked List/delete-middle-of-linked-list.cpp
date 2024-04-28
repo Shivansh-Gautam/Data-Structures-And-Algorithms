@@ -1,7 +1,6 @@
 //{ Driver Code Starts
 #include <bits/stdc++.h> 
 using namespace std; 
-
 struct Node
 {
     int data;
@@ -13,8 +12,60 @@ struct Node
     }
 };
 
-/* Function to get the middle of the linked list*/
-struct Node *deleteMid(struct Node *head);
+
+
+// } Driver Code Ends
+/* Link list Node:
+
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+// Deletes middle of linked list and returns head of the modified list
+class Solution{
+    public:
+   Node* deleteMid(Node* head)
+    {
+        Node *temp = head;
+        Node *slow = head;
+        Node *fast = head;
+        if(head->next == NULL || head == NULL)
+            return NULL;     
+        while(slow && fast->next && fast->next->next)
+        {
+            temp = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        if(fast->next == NULL)
+        {
+            temp->next = slow->next;
+            free(slow);
+        }
+        if(fast->next && fast->next->next == NULL)
+        {
+            temp = slow->next;
+            slow->next = slow->next->next;
+            free(temp);
+        }
+        return head;
+        // Your Code Here
+    }
+};
+
+//{ Driver Code Starts.
+
+
+
 void printList(Node* node) 
 { 
 	while (node != NULL) { 
@@ -42,7 +93,8 @@ int main()
 			tail->next = new Node(data);
 			tail = tail->next;
 		}
-		head = deleteMid(head);
+		Solution obj;
+		head = obj.deleteMid(head);
 		printList(head); 
 	}
 	return 0; 
@@ -51,72 +103,3 @@ int main()
 
 
 // } Driver Code Ends
-
-
-/* Link list Node:
-
-struct Node
-{
-    int data;
-    struct Node* next;
-
-    Node(int x){
-        data = x;
-        next = NULL;
-    }
-};
-
-*/
-
-// Deletes middle of linked list and returns head of the modified list
-int getLength(Node* & head){
-    Node* temp=head;
-    int len=0;
-    while(temp!=NULL){
-        temp=temp->next;
-        len++;
-    }
-    return len;
-}
-Node *findMiddle(Node *head) {
-    // Write your code here
-    Node* slow=head;
-    Node* fast=head->next;
-    int len=getLength(head);
-    if(len%2!=0){
-        while(slow!=NULL && fast!=NULL){
-        fast=fast->next;
-        if(fast!=NULL){
-            fast=fast->next;
-            slow=slow->next;
-        }
-     }
-        return slow;
-    }
-    else{
-            while(slow!=NULL && fast!=NULL){
-        fast=fast->next;
-        if(fast!=NULL){
-            fast=fast->next;
-            slow=slow->next;
-        }
-     }
-        return slow->next;
-    }
- 
-}
-
-
-Node* deleteMid(Node* head){
-    // Write your code here.
-    Node* middle=findMiddle(head);
-    Node* temp=head;
-    if(head==NULL || head->next==NULL) return NULL;
-   
-    while(temp->next!=middle){
-        temp=temp->next;
-    }
-    temp->next=temp->next->next;
-    delete middle;
-    return head;
-}
