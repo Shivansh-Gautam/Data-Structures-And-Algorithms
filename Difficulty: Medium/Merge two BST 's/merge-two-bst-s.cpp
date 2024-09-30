@@ -94,52 +94,37 @@ struct Node {
 */
 class Solution {
   public:
-   void inorder(Node*root, vector<int> &ans){
-        if(!root) return;
-        inorder(root->left,ans);
-        ans.push_back(root->data);
-        inorder(root->right,ans);
-    }
- void merge(vector<int> & ans1,vector<int> & ans2,vector<int> & ans){
-        int i =0;
-        int j=0;
-        while(i<ans1.size() and j<ans2.size()){
-            if(ans1[i]==ans2[j]){
-                ans.push_back(ans1[i]);
-                ans.push_back(ans2[j]);
-                i++;
-                j++;
-            }
-            else if(ans1[i]<ans2[j]){
-                ans.push_back(ans1[i]);
-                i++;
-            }
-            else{
-                ans.push_back(ans2[j]);
-                j++;
-            }
-        }
-        
-        while(i<ans1.size()){
-            ans.push_back(ans1[i]);
-            i++;
-        }
-        while(j<ans2.size()){
-            ans.push_back(ans2[j]);
-            j++;
-        }
-    
- }
+    // Function to return a list of integers denoting the node
+    // values of both the BST in a sorted order.
+     void r(Node *root, vector<int>&v){
+
+      if(root==nullptr) return;
+
+      v.push_back(root->data);
+
+      r(root->left,v);
+
+      r(root->right,v);
+
+  }
+
+    // Function to return a list of integers denoting the node
+
+    // values of both the BST in a sorted order.
+
     vector<int> merge(Node *root1, Node *root2) {
+
         // Your code here
-      
-        vector<int> ans1,ans2;
-        inorder(root1,ans1);
-        inorder(root2,ans2);
-        vector<int> ans;
-        merge(ans1,ans2,ans);
-        
-    return ans;
+
+        vector<int>ans;
+
+        r(root1,ans);
+
+        r(root2,ans);
+
+        sort(ans.begin(),ans.end());
+
+        return ans;
     }
 };
 
