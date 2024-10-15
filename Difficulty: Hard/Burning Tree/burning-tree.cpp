@@ -96,81 +96,90 @@ struct Node {
 */
 class Solution {
   public:
-   Node* createParentMapping(Node* root, int target, map<Node*, Node*> &nodeToParent){
-        Node* res = NULL;
-        queue<Node*> q;
+     Node * findTargetNode(Node* root, int target)
+    {
+        queue<Node *> q;
         q.push(root);
-        nodeToParent[root] = NULL;
         
-        while(!q.empty()){
-            Node* front = q.front();
+        while(!q.empty())
+        {
+            Node * node= q.front();
+            if(node->data==target) return node;
             q.pop();
-            
-            if(front-> data == target){
-                res = front;
+            if(node->left)
+            {
+                q.push(node->left);
+              
+            }
+            if(node->right)
+            {
+                q.push(node->right);
+               
             }
             
-            if(front -> left){
-                nodeToParent[front -> left] = front;
-                q.push(front -> left);
-            }
-            if(front -> right){
-                nodeToParent[front -> right] = front;
-                q.push(front -> right);
-            }
         }
-        return res;
-    }
-    
-    int burnTree(Node* root, map<Node*, Node*> &nodeToParent){
         
-        map<Node*, bool> visited;
-        queue<Node*> q;
-        int ans = 0;
-        
-        
-        q.push(root);
-        visited[root] = 1;
-        
-        while(!q.empty()){
-            int size = q.size();
-            bool flag = 0;
-            for(int i=0;i<size;i++){
-                //process
-                Node* front = q.front();
-                q.pop();
-                
-                if(front -> left && visited[front -> left]==0){
-                    q.push(front -> left);
-                    visited[front -> left] = 1;
-                    flag = 1;
-                }
-                if(front -> right && visited[front -> right]==0){
-                    q.push(front -> right);
-                    visited[front -> right] = 1;
-                    flag = 1;
-                }
-                if(nodeToParent[front] && visited[nodeToParent[front]]==0){
-                    q.push(nodeToParent[front]);
-                    visited[nodeToParent[front]] = 1;
-                    flag = 1;
-                }
-            }
-            if(flag == 1){
-                ans++;
-            }
-        }
-        return ans;
     }
     
     int minTime(Node* root, int target) 
     {
         // Your code goes here
-        map<Node*, Node*> nodeToParent;
-        Node* targ = createParentMapping(root, target, nodeToParent);
+        if(root == NULL) return 0;
         
-        int ans = burnTree(targ, nodeToParent);
-        return ans;
+        queue<Node*> q;
+        q.push(root);
+        unordered_map<Node*,Node*> mp;
+        
+        while(!q.empty()){
+            int size = q.size();
+            for(int i=0; i<size; i++){
+                Node* t = q.front();
+                q.pop();
+                if(t->left){
+                    mp[t->left] = t;
+                    q.push(t->left);
+                }
+                if(t->right){
+                    mp[t->right] = t;
+                    q.push(t->right);
+                }
+            }
+        }
+        
+        Node* targetNode = findTargetNode(root,target);
+        unordered_map<Node*,bool> vis;
+        q.push(targetNode);
+        vis[targetNode]=true;
+        int distance=0;
+        int f = 0;
+        
+        while(!q.empty()){
+            int size = q.size();
+            int f = 0;
+            
+            for(int i=0; i<size; i++){
+                Node* t = q.front();
+                q.pop();
+                
+                if(t->left && !vis[t->left]){
+                    f=1;
+                    q.push(t->left);
+                    vis[t->left]=true;
+                }
+                if(t->right && !vis[t->right]){
+                    f=1;
+                    q.push(t->right);
+                    vis[t->right]=true;
+                }
+                if(mp[t] && !vis[mp[t]]){
+                    f=1;
+                    q.push(mp[t]);
+                    vis[mp[t]]=true;
+                }
+            }
+            if(f) distance++;
+        }
+        return distance;
     }
 };
 
