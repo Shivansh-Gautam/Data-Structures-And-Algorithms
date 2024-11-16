@@ -8,7 +8,8 @@ using namespace std;
 class Solution {
   public:
     void pushZerosToEnd(vector<int>& arr) {
-         int n = arr.size();
+        // code here
+               int n = arr.size();
         int curr = 0;
         for(int i = 0;i<n;i++)
         {
