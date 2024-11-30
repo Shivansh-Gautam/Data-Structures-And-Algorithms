@@ -7,12 +7,12 @@ using namespace std;
 class Solution {
   public:
     // Function is to check whether two strings are anagram of each other or not.
-    bool isAnagram(string a, string b) {
-     sort(a.begin(),a.end());
-     sort(b.begin(),b.end());
-     if(a == b) return true;
-     else return false;
+    bool areAnagrams(string& s1, string& s2) {
         // Your code here
+            sort(s1.begin(),s1.end());
+            sort(s2.begin(),s2.end());
+            if(s1 == s2) return true;
+            else return false;
     }
 };
 
@@ -29,10 +29,11 @@ int main() {
 
         cin >> c >> d;
         Solution obj;
-        if (obj.isAnagram(c, d))
-            cout << "YES" << endl;
+        if (obj.areAnagrams(c, d))
+            cout << "true" << endl;
         else
-            cout << "NO" << endl;
+            cout << "false" << endl;
+        cout << "~" << endl;
     }
 }
 
