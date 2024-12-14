@@ -8,29 +8,10 @@ class Solution {
   public:
     int search(vector<int>& arr, int key) {
         // complete the function here
-            int start=0;
-        int end = arr.size()-1;
-        while(start<=end){
-            int mid = start + (end - start)/2;
-            if(arr[mid]==key) return mid;
-            if(arr[start]<=arr[mid]){
-                if(arr[start]<= key && key<=arr[mid]){
-                    end = mid - 1;
-                }
-                else{
-                    start = mid + 1;
-                }
-            }
-            else{
-                if(arr[mid]<= key && key<=arr[end]){
-                    start = mid + 1;
-                }
-                else{
-                    end = mid - 1;
-                }
-            }
-        }
-        return -1;
+        auto it = find(arr.begin(),arr.end(),key);
+        if(it != arr.end())
+        return distance(arr.begin(),it);
+        else return -1;
     }
 };
 
@@ -52,6 +33,7 @@ int main() {
         cin >> key;
         Solution ob;
         cout << ob.search(arr, key) << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
