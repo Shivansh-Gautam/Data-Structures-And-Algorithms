@@ -12,20 +12,18 @@ class Solution {
     // largest elements
     int getSecondLargest(vector<int> &arr) {
         // Code Here
-           int n=arr.size();
-        int maxi=-1,sec_max=-1;
-       // sort(arr.begin(),arr.end());
-         for(int i=0;i<n;i++){
-            // find the largest and second largest element
-
-            if(maxi<arr[i]){
-                sec_max=maxi;
-                maxi=arr[i];
-             }
-             else if(sec_max<arr[i] && arr[i]!=maxi) sec_max=arr[i]; // second element should               //be not equal to largest one
-              
-         }
-        return sec_max;
+        int largest = arr[0], slargest = -1;
+        for(int i = 0; i < arr.size(); i++){
+            if(arr[i] > largest){
+                 slargest = largest;
+                largest = arr[i];
+               
+            }
+            else if(arr[i] < largest && arr[i] > slargest){
+                slargest = arr[i];
+            }
+        }
+        return slargest;
     }
 };
 
