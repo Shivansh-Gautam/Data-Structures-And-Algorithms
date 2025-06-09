@@ -1,27 +1,25 @@
 class Solution {
 public:
-    int Count(long curr, long next, int n) {
-        long countnum = 0;
-        while (curr <= n) {
-            countnum += (next - curr);
-            curr *= 10;
-            next *= 10;
-            next = min(next, (long)n + 1);
-        }
-        return countnum;
-    }
-
     int findKthNumber(int n, int k) {
         int curr = 1;
-        k -= 1;
+        k--; // convert to 0-based index
         while (k > 0) {
-            int count = Count(curr, curr + 1, n);
-            if (count <= k) {
+            long steps = 0, first = curr, last = curr + 1;
+            // Count numbers in current level of the trie
+            while (first <= n) {
+                steps += min(static_cast<long>(n) + 1, last) - first;
+                first *= 10;
+                last *= 10;
+            }
+            
+            if (steps <= k) {
+                // Move to next sibling
                 curr++;
-                k -= count;
+                k -= steps;
             } else {
+                // Move to first child
                 curr *= 10;
-                k -= 1;
+                k--;
             }
         }
         return curr;
